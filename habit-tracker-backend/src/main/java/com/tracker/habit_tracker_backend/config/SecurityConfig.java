@@ -14,13 +14,18 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig  {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        return http
-                .authorizeHttpRequests(auth ->{
-                    auth.requestMatchers("/api/test").permitAll();
-                    auth.anyRequest().authenticated();
-                })
-                .formLogin(Customizer.withDefaults())
-                .build();
+        http.csrf(customizer ->customizer.disable());
+        http.authorizeHttpRequests(request -> request.anyRequest().authenticated());
+        http.formLogin(Customizer.withDefaults());
+        http.httpBasic(Customizer.withDefaults());
+//        return http.build();
+//                .authorizeHttpRequests(auth ->{
+//                    auth.requestMatchers("/api/users/create").permitAll();
+//                    auth.anyRequest().authenticated();
+//                })
+//                .formLogin(Customizer.withDefaults())
+//                .build();
+        return http.build();
     }
 //    @Bean
 //    public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
